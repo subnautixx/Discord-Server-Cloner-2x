@@ -5,29 +5,37 @@
 ---
 
 ## Overview
-This project was made to make your life easier, instead of spending hours trying to make your server as beautiful as possible you can simply clone a server with this tool
+Clone any Discord server structure in seconds. Instead of manually recreating channels, roles and other settings, this tool allows you to duplicate an existing server using your account token.
 
 **More information:** [Cloner Website](https://cloner-one.vercel.app/)
 
-## How to use? 
-```typescript
-$ pnpm i
-# or
-$ npm i
-# or
-$ yarn add
-```
-**Examples with tsx**
-```typescript
-$ pnpm i -g tsx
-# or
-$ npm i -g tsx
+## Requirements
+- Node.js 16+
+- A Discord account token placed in a `.env` file (`TOKEN=YOUR_TOKEN`)
+
+## Installation
+```bash
+npm install
 ```
 
-```typescript
-$ tsx .
+### Development
+Run the project directly with tsx for a fast feedback loop:
+```bash
+npm start
 ```
-**You can also use [codesandbox](https://codesandbox.io/dashboard/recent) to start the cloner**
+
+### Production
+Compile the TypeScript sources and run the generated JavaScript:
+```bash
+npm run build
+npm run start:prod
+```
+
+Backups are stored in `src/src/cloner` with a unique ID so previous backups are kept intact.
+
+
+### Notes
+Never share your account token with anyone. Use this tool responsibly and only with servers you own or manage.
 
 ----
 
