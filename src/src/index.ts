@@ -47,19 +47,16 @@ if (!existsSync(cloner)) {
  * Checks if a backup exists and returns its data
  */
 const getBackupData = async (backupID: string) => {
-  return new Promise<BackupData>(async (resolve, reject) => {
-    const files = await readdirAsync(cloner); // Read "cloner" directory
-    // Try to get the json file
-    const file = files
-      .filter((f) => f.split(".").pop() === "json")
-      .find((f) => f === `666.json`);
-    if (file) {
-      // If the file exists
-      const backupData: BackupData = require(`${cloner}${sep}${file}`);
-      // Returns backup informations
-      resolve(backupData);
+  return new Promise<BackupData>((resolve, reject) => {
+    const file = `${cloner}${sep}${backupID}.json`;
+    if (existsSync(file)) {
+      try {
+        const backupData: BackupData = require(file);
+        resolve(backupData);
+      } catch (err) {
+        reject(err);
+      }
     } else {
-      // If no backup was found, return an error message
       reject("N found");
     }
   });
@@ -72,7 +69,7 @@ export const fetch = (backupID: string) => {
   return new Promise<BackupInfos>(async (resolve, reject) => {
     getBackupData(backupID)
       .then((backupData) => {
-        const size = statSync(`${cloner}${sep}666.json`).size;
+        const size = statSync(`${cloner}${sep}${backupID}.json`).size;
         const backupInfos: BackupInfos = {
           data: backupData,
           id: backupID,
@@ -171,7 +168,7 @@ export const create = async (
           : JSON.stringify(backupData);
         // Save the backup
         await writeFileAsync(
-          `${cloner}${sep}666.json`,
+          `${cloner}${sep}${backupData.id}.json`,
           backupJSON,
           "utf-8"
         );
@@ -249,8 +246,9 @@ export const load = async (
 export const remove = async (backupID: string) => {
   return new Promise<void>((resolve, reject) => {
     try {
-      require(`${cloner}${sep}666.json`);
-      unlinkSync(`${cloner}${sep}666.json`);
+      const file = `${cloner}${sep}${backupID}.json`;
+      require(file);
+      unlinkSync(file);
       resolve();
     } catch (error) {
       reject("Not found");

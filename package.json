@@ -3,9 +3,11 @@
 	"version": "2.0",
 	"description": "Discord Server Cloner 2.0 - Infinite community",
 	"main": "src/index",
-	"scripts": {
-		"start": "tsx src/index"
-	},
+        "scripts": {
+                "start": "tsx src/index",
+                "build": "tsc",
+                "start:prod": "node lib/index.js"
+        },
 	"devDependencies": {
 		"@types/gradient-string": "^1.1.2",
 		"@types/node": "^20.6.0",
